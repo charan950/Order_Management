@@ -11,10 +11,10 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Node.js
-      uses: actions/setup-node@v2
+      uses: actions/setup-dotnet@v3
       with:
         node-version: 16
 
@@ -37,27 +37,27 @@ jobs:
         name: app-artifact
         path: A4L_Deployement/bin/Release/net7.0/publish/
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
+  # deploy:
+  #   needs: build
+  #   runs-on: ubuntu-latest
 
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+  #   steps:
+  #   - name: Checkout code
+  #     uses: actions/checkout@v3
 
-    - name: Download Artifact
-      uses: actions/download-artifact@v2
-      with:
-        name: app-artifact
-        path: app-artifact
+  #   - name: Download Artifact
+  #     uses: actions/download-artifact@v2
+  #     with:
+  #       name: app-artifact
+  #       path: app-artifact
 
-    - name: Deploy to Server
-      run: |
-        # Here, you can add commands to deploy the application to your server.
-        # This might involve copying files, setting up a web server, etc.
-        # Replace the following line with your deployment commands.
+  #   - name: Deploy to Server
+  #     run: |
+  #       # Here, you can add commands to deploy the application to your server.
+  #       # This might involve copying files, setting up a web server, etc.
+  #       # Replace the following line with your deployment commands.
 
-        # Example:
-        # sudo cp -r app-artifact/* /var/www/myapp/
+  #       # Example:
+  #       # sudo cp -r app-artifact/* /var/www/myapp/
         
-        echo "Deployment completed"
+  #       echo "Deployment completed"
