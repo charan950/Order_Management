@@ -32,7 +32,8 @@ jobs:
 
     - name: Setup Node.js
       uses: actions/setup-dotnet@v3
-     
+      with:
+        node-version: [14,16]
 
     - name: Install Angular CLI
       run: npm install -g @angular/cli@16
