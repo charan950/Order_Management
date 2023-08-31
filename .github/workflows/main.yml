@@ -1,25 +1,63 @@
-name: .NET
+name: ASP.NET Core with Angular Deployment
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    branches:
+      - master
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
       with:
-        dotnet-version: 6.0.x
-    - name: Restore dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --no-restore
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+        node-version: 16
+
+    - name: Install Angular CLI
+      run: npm install -g @angular/cli@16
+
+    - name: Restore and Build .NET Core
+      run: dotnet restore A4L_Deployement.sln
+      working-directory: A4L_Deployement
+
+    - name: Build Angular App
+      run: |
+        cd A4L_Deployement/ClientApp
+        npm install
+        ng build --prod --aot
+
+    - name: Publish Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: app-artifact
+        path: A4L_Deployement/bin/Release/net7.0/publish/
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Download Artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: app-artifact
+        path: app-artifact
+
+    - name: Deploy to Server
+      run: |
+        # Here, you can add commands to deploy the application to your server.
+        # This might involve copying files, setting up a web server, etc.
+        # Replace the following line with your deployment commands.
+
+        # Example:
+        # sudo cp -r app-artifact/* /var/www/myapp/
+        
+        echo "Deployment completed"
